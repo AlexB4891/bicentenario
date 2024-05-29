@@ -6,8 +6,8 @@
 #'
 #' @noRd
 map_histogram <- function(table_province,
-                          year,
-                          industry,
+                          # year,
+                          # industry,
                           shape,
                           diccionario,
                           title,
@@ -16,8 +16,10 @@ map_histogram <- function(table_province,
   # table_province <- dplyr::filter(table_design, anio_fiscal == year, des_sector == industry) %>%
   #   dplyr::group_by(provincia) %>%
   #   dplyr::summarise(promedio = srvyr::survey_mean(indicador_z, na.rm = TRUE),
-  #                     n = srvyr::survey_total( na.rm = TRUE)) %>%
-  #   dplyr::left_join(diccionario)
+  #                     n = srvyr::survey_total( na.rm = TRUE))
+
+  table_province <- table_province  %>%
+    dplyr::left_join(diccionario)
 
   datos_map <- dplyr::left_join(shape,
                                 table_province, by = c("DPA_PROVIN" = "provincia")) %>%
@@ -120,7 +122,7 @@ ranking_func <- function(tabla_provincia, labels) {
     gt::fmt_number(columns = vars(personal), decimals = 0) %>%
     gt::fmt_currency(columns = vars(inversion),currency = "USD", decimals = 2) %>%
     gt::fmt_currency(columns = vars( ventas ),currency = "USD", decimals = 2) %>%
-    gt::tab_header(title = "Ranking de provincias",
+    gt::tab_header(title = "Ranking de acuerdo al indicador de adopción de TIC's",
                    subtitle = "Promedio de las variables de adopción de TIC's por provincia") %>%
     gt::cols_label(.list = labels) %>%
     gt::cols_hide(c(provincia, matches("_se$")))
