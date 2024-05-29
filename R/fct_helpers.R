@@ -109,26 +109,28 @@ map_histogram <- function(table_province,
 ranking_func <- function(tabla_provincia, labels) {
 
   tabla_provincia <- tabla_provincia %>%
-    dplyr::arrange(desc(promedio)) %>%
+    dplyr::arrange(desc(indicador)) %>%
     tibble::rowid_to_column(var = "Ranking")
 
   ranking <- tabla_provincia %>%
-    dplyr::arrange(desc(promedio)) %>%
-    dplyr::select(Ranking, dplyr::everything()) %>%
+    dplyr::select(Ranking,provincia_label, dplyr::everything()) %>%
     gt::gt() %>%
     gt::fmt_number(columns = vars(indicador), decimals = 2) %>%
     gt::fmt_number(columns = vars(n), decimals = 0) %>%
+    gt::fmt_number(columns = vars(personal), decimals = 0) %>%
+    gt::fmt_currency(columns = vars(inversion),currency = "USD", decimals = 2) %>%
+    gt::fmt_currency(columns = vars( ventas ),currency = "USD", decimals = 2) %>%
     gt::tab_header(title = "Ranking de provincias",
-                   subtitle = "Promedio de adopción de TIC's por provincia") %>%
-    gt::cols_label(labels) %>%
+                   subtitle = "Promedio de las variables de adopción de TIC's por provincia") %>%
+    gt::cols_label(.list = labels) %>%
     gt::cols_hide(c(provincia, matches("_se$")))
 
   ranking <- ranking %>%
     gt::data_color(
-      columns = promedio,
+      columns = indicador,
       fn = scales::col_numeric(
         palette = "viridis",
-        domain = c(0, max(tabla_provincia$promedio)),
+        domain = c(0, max(tabla_provincia$indicador)),
         reverse = TRUE
       )
     ) %>%
@@ -141,7 +143,8 @@ ranking_func <- function(tabla_provincia, labels) {
                                                rows = which(.x == "Manabí" ))
                               }
       )
-    )
+    ) %>%
+    gtExtras::gt_theme_538()
 
   return(ranking)
 }
