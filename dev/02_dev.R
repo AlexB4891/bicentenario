@@ -20,8 +20,13 @@ attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
-golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
+golem::add_module(name = "ranking_prov_tables", with_test = TRUE) # Name of the module
+golem::add_module(name = "ranking_prov_map", with_test = TRUE) # Name of the module
+golem::add_module(name = "ranking_texts", with_test = TRUE) # Name of the module
+golem::add_module(name = "foda_f", with_test = TRUE) # Name of the module
+golem::add_module(name = "foda_o", with_test = TRUE) # Name of the module
+golem::add_module(name = "foda_d", with_test = TRUE) # Name of the module
+golem::add_module(name = "foda_a", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
@@ -33,11 +38,13 @@ golem::add_utils("helpers", with_test = TRUE)
 golem::add_js_file("script")
 golem::add_js_handler("handlers")
 golem::add_css_file("custom")
-golem::add_sass_file("custom")
 
 ## Add internal datasets ----
 ## If you have data in your package
-usethis::use_data_raw(name = "my_dataset", open = FALSE)
+usethis::use_data_raw(name = "modulo_tics", open = TRUE)
+usethis::use_data_raw(name = "shapes", open = TRUE)
+usethis::use_data_raw(name = "diccionario", open = TRUE)
+
 
 ## Tests ----
 ## Add one line by test you want to create
