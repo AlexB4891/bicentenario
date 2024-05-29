@@ -5,7 +5,7 @@
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-map_histogram <- function(table_design,
+map_histogram <- function(table_province,
                           year,
                           industry,
                           shape,
@@ -13,11 +13,11 @@ map_histogram <- function(table_design,
                           title,
                           subtitle){
 
-  table_province <- dplyr::filter(table_design, anio_fiscal == year, des_sector == industry) %>%
-    dplyr::group_by(provincia) %>%
-    dplyr::summarise(promedio = srvyr::survey_mean(indicador_z, na.rm = TRUE),
-                      n = srvyr::survey_total( na.rm = TRUE)) %>%
-    dplyr::left_join(diccionario)
+  # table_province <- dplyr::filter(table_design, anio_fiscal == year, des_sector == industry) %>%
+  #   dplyr::group_by(provincia) %>%
+  #   dplyr::summarise(promedio = srvyr::survey_mean(indicador_z, na.rm = TRUE),
+  #                     n = srvyr::survey_total( na.rm = TRUE)) %>%
+  #   dplyr::left_join(diccionario)
 
   datos_map <- dplyr::left_join(shape,
                                 table_province, by = c("DPA_PROVIN" = "provincia")) %>%
@@ -76,7 +76,7 @@ map_histogram <- function(table_design,
       color = 'gray',
       size = 0.3
     ) +
-    ggplot2::geom_point(data = tabla_manabi, aes(x = DPA_DESPRO1,y = promedio ),vjust = -5,shape = 25, color = "darkblue", fill = "darkblue") +
+    ggplot2::geom_point(data = tabla_manabi, aes(x = DPA_DESPRO1,y = promedio ),vjust = -10,shape = 25, color = "darkblue", fill = "darkblue",size = 3) +
     ggplot2::guides(fill = ggplot2::guide_colorbar(title = "Promedio")) +
     ggplot2::scale_fill_viridis_d() +
     ggplot2::theme_void() +
@@ -100,4 +100,48 @@ map_histogram <- function(table_design,
     height_svg = 5,
     width_svg = 9
   )
+}
+
+
+
+# Tabla en gt -------------------------------------------------------------
+
+ranking_func <- function(tabla_provincia, labels) {
+
+  tabla_provincia <- tabla_provincia %>%
+    dplyr::arrange(desc(promedio)) %>%
+    tibble::rowid_to_column(var = "Ranking")
+
+  ranking <- tabla_provincia %>%
+    dplyr::arrange(desc(promedio)) %>%
+    dplyr::select(Ranking, dplyr::everything()) %>%
+    gt::gt() %>%
+    gt::fmt_number(columns = vars(indicador), decimals = 2) %>%
+    gt::fmt_number(columns = vars(n), decimals = 0) %>%
+    gt::tab_header(title = "Ranking de provincias",
+                   subtitle = "Promedio de adopción de TIC's por provincia") %>%
+    gt::cols_label(labels) %>%
+    gt::cols_hide(c(provincia, matches("_se$")))
+
+  ranking <- ranking %>%
+    gt::data_color(
+      columns = promedio,
+      fn = scales::col_numeric(
+        palette = "viridis",
+        domain = c(0, max(tabla_provincia$promedio)),
+        reverse = TRUE
+      )
+    ) %>%
+    gt::tab_style(
+      style = gt::cell_fill(color = "#2dc937", alpha = 0.5),
+      locations = purrr::map2(.x = dplyr::select(tabla_provincia,provincia_label),
+                              .y = names(dplyr::select(tabla_provincia,provincia_label)),
+                              .f = function(.x,.y) {
+                                gt::cells_body(columns = .y,
+                                               rows = which(.x == "Manabí" ))
+                              }
+      )
+    )
+
+  return(ranking)
 }
