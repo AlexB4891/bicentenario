@@ -11,13 +11,12 @@
 mod_ranking_sidebar_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h2("Índice de Adopción de TICS"),br(),
-    h3("Caso aplicado a la provincia de Mananbí"),br(),
+    h2("Índice de Adopción de TICS"),
+    h3("Caso aplicado a la provincia de Mananbí"),
     h4("Autores:"),br(),
-    HTML("<b>Alex Bajaña</b>  (OBS Business School)"),br(),
-    HTML("<b>Kathia Pinzón</b>  (Escuela Politécnica Nacional)"),
-    HTML("<b>Paúl Yungán</b>  (TEC de Monterrey)"),br(),
-    p("El índice de adopción de TICS es un indicador que mide el grado de adopción de las tecnologías de la información y comunicación en las empresas."),br(),
+    HTML("<b>Alex Bajaña</b>  (OBS Business School)<br><br>"),
+    HTML("<b>Kathia Pinzón</b>  (Escuela Politécnica Nacional)<br><br>"),
+    HTML("<b>Paúl Yungán</b>  (TEC de Monterrey)<br><br>"),
     radioGroupButtons(
       inputId = ns("anio"),
       label = "Selecciona un año",
@@ -35,7 +34,9 @@ mod_ranking_sidebar_ui <- function(id){
       label = "Selecciona una forma de medida:",
       choices = c("Media", "Mediana")
     ),
-    p("El índice está construido en base a la Encuesta Estructural Empresarial (ENEMSE )del Instituto Nacional de Estadística y Censos (INEC).")
+    HTML("El índice de adopción de TICS es un indicador que mide el grado de adopción de las te1cnologías de la información y comunicación en las empresas. <br><br>"),
+    actionButton(inputId = ns("btn"), label = "Ficha metodológica"),
+    HTML("<br><br> El índice está construido en base a la Encuesta Estructural Empresarial (ENEMSE )del Instituto Nacional de Estadística y Censos (INEC).")
 
   )
 }

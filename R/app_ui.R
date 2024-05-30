@@ -9,7 +9,7 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    semanticPage(
+    fluidPage(
       titlePanel(
         shiny::fluidRow(
           shiny::column(4, shiny::img(src = "www/bicentenario.png", height = "100px")),
@@ -17,8 +17,8 @@ app_ui <- function(request) {
           shiny::column(4, shiny::img(src = "www/ergos.png", height = "100px"))
         )
       ),
-      sidebar_layout(
-        sidebar_panel(
+      sidebarLayout(
+        sidebarPanel(
           mod_ranking_sidebar_ui("ranking_sidebar_1")
         ),
         main_panel(
