@@ -18,11 +18,22 @@ app_ui <- function(request) {
         )
       ),
       sidebarLayout(
-        sidebarPanel(
+        sidebarPanel(width = 2,
           mod_ranking_sidebar_ui("ranking_sidebar_1")
         ),
         main_panel(
-          mod_ranking_prov_map_ui("ranking_prov_map_1")
+          fluidRow(
+            column(5,
+                   mod_ranking_prov_map_ui("ranking_prov_map_1")
+                   ),
+            column(1,br()),
+            column(4,
+                   mod_ranking_prov_tables_ui("ranking_prov_tables_1")
+                   ),
+            column(2,br())
+          )
+
+
           # Add here the UI for the main body
           # For example, you can add a tabsetPanel
           # with multiple tabs

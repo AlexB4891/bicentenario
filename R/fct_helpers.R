@@ -100,7 +100,7 @@ map_histogram <- function(table_province,
       ggiraph::opts_sizing(rescale = FALSE)
     ),
     height_svg = 10,
-    width_svg = 15
+    width_svg = 12
   )
 }
 

@@ -31,9 +31,15 @@ mod_ranking_prov_map_server <- function(id,anio,sector){
       tabla_original = modulo_tics,
       diccionario = diccionario,
       shapes = shapes
+      # ,
+      # tabla_filtrada = NULL
     )
 
 
+    # observeEvent(list(anio,sector) {
+    #
+    #
+    # })
 
 
     tabla_filtrada <- reactive({
@@ -41,8 +47,8 @@ mod_ranking_prov_map_server <- function(id,anio,sector){
 
       objetos_app$tabla_original %>%
         dplyr::mutate(provincia = stringr::str_pad(width = 2,provincia,pad = "0")) %>%
-        dplyr::filter(anio_fiscal == anio,
-               des_sector == sector) %>%
+        dplyr::filter(anio_fiscal == anio(),
+               des_sector == sector()) %>%
         dplyr::left_join(diccionario)
 
     })
@@ -50,8 +56,8 @@ mod_ranking_prov_map_server <- function(id,anio,sector){
     output$mapa <- ggiraph::renderGirafe({
 
 
-      text_title <- stringr::str_c("Indice de Adopción de TICS ", anio)
-      text_subtitle <- stringr::str_c("Sector productivo: ", sector)
+      text_title <- stringr::str_c("Indice de Adopción de TICS ", anio())
+      text_subtitle <- stringr::str_c("Sector productivo: ", sector())
 
       map_histogram(tabla_filtrada()  %>%
                       rename(promedio = indicador),
@@ -63,6 +69,7 @@ mod_ranking_prov_map_server <- function(id,anio,sector){
     })
 
 
+    return(tabla_filtrada)
 
   })
 }
