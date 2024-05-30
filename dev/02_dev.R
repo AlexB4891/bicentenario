@@ -23,6 +23,7 @@ attachment::att_amend_desc()
 golem::add_module(name = "ranking_prov_tables", with_test = TRUE) # Name of the module
 golem::add_module(name = "ranking_prov_map", with_test = TRUE) # Name of the module
 golem::add_module(name = "ranking_texts", with_test = TRUE) # Name of the module
+golem::add_module(name = "ranking_sidebar", with_test = TRUE) # Name of the module
 golem::add_module(name = "foda_f", with_test = TRUE) # Name of the module
 golem::add_module(name = "foda_o", with_test = TRUE) # Name of the module
 golem::add_module(name = "foda_d", with_test = TRUE) # Name of the module

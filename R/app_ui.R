@@ -2,16 +2,33 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny
+#' @import shiny shiny.semantic
 #' @noRd
 app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("bicentenario")
+    semanticPage(
+      titlePanel(
+        shiny::fluidRow(
+          shiny::column(4, shiny::img(src = "www/bicentenario.png", height = "100px")),
+          shiny::column(4, shiny::img(src = "www/prefectura.png", height = "100px")),
+          shiny::column(4, shiny::img(src = "www/ergos.png", height = "100px"))
+        )
+      ),
+      sidebar_layout(
+        sidebar_panel(
+          mod_ranking_sidebar_ui("ranking_sidebar_1")
+        ),
+        main_panel(
+          # Add here the UI for the main body
+          # For example, you can add a tabsetPanel
+          # with multiple tabs
+        )
+
     )
+  )
   )
 }
 
