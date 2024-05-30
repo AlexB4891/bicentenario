@@ -6,5 +6,10 @@
 #' @noRd
 app_server <- function(input, output, session) {
   # Your application server logic
-  mod_ranking_sidebar_server("ranking_sidebar_1")
+  inputs_side <- mod_ranking_sidebar_server("ranking_sidebar_1")
+
+  anio_side <- reactive(inputs_side()$anio)
+  sector_side <- reactive(inputs_side()$sector)
+
+  mod_ranking_prov_map_server("ranking_prov_map_1",anio = anio_side(),sector = sector_side())
 }

@@ -48,6 +48,13 @@ mod_ranking_sidebar_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+     return(reactive({
+      list(
+        anio = input$anio,
+        sector = input$sector
+      )
+    }))
+    
   })
 }
 

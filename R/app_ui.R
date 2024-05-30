@@ -22,6 +22,7 @@ app_ui <- function(request) {
           mod_ranking_sidebar_ui("ranking_sidebar_1")
         ),
         main_panel(
+          mod_ranking_prov_map_ui("ranking_prov_map_1")
           # Add here the UI for the main body
           # For example, you can add a tabsetPanel
           # with multiple tabs

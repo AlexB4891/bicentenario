@@ -99,8 +99,8 @@ map_histogram <- function(table_province,
       ggiraph::opts_hover_inv(css = "opacity:0.1;"),
       ggiraph::opts_sizing(rescale = FALSE)
     ),
-    height_svg = 5,
-    width_svg = 9
+    height_svg = 10,
+    width_svg = 15
   )
 }
 
