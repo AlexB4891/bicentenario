@@ -8,6 +8,11 @@
 app_ui <- function(request) {
   shinyUI(
     semanticPage(
+      tags$head(
+        tags$link(rel = "stylesheet", type = "text/css", id = "bootstrapCSS",
+                  href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),
+        tags$script(src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+      ),
       title = "Mi aplicación",
       suppressDependencies("bootstrap"),
       div(
