@@ -10,7 +10,10 @@
 mod_ranking_prov_tables_ui <- function(id){
   ns <- NS(id)
   tagList(
-    gt::gt_output(ns("tabla_prov"))
+    tags$div(
+      style = "width:100%; height:100%; overflow-x: scroll'",
+      gt::gt_output(ns("tabla_prov"))
+    )
   )
 }
 

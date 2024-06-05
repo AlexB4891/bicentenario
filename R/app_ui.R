@@ -2,48 +2,52 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny shiny.semantic
+#' @import shiny shiny.semantic shinydashboard
 #' @noRd
+
 app_ui <- function(request) {
-  tagList(
-    # Leave this function for adding external resources
-    golem_add_external_resources(),
-    # Your application UI logic
-    fluidPage(
-      titlePanel(
-        shiny::fluidRow(
-          shiny::column(4, shiny::img(src = "www/bicentenario.png", height = "100px")),
-          shiny::column(4, shiny::img(src = "www/prefectura.png", height = "100px")),
-          shiny::column(4, shiny::img(src = "www/ergos.png", height = "100px"))
+  shinyUI(
+    semanticPage(
+      title = "Mi aplicación",
+      suppressDependencies("bootstrap"),
+      div(
+        class = "ui grid",
+        div(
+          class = "five wide column",
+          img(src = "www/bicentenario.png", height = "100px")
+        ),
+        div(
+          class = "five wide column",
+          img(src = "www/prefectura.png", height = "100px")
+        ),
+        div(
+          class = "six wide column",
+          img(src = "www/ergos.png", height = "100px")
         )
       ),
-      sidebarLayout(
-        sidebarPanel(width = 2,
+      sidebar_layout(
+        sidebar_panel(
+          style = "width: 300px;",
           mod_ranking_sidebar_ui("ranking_sidebar_1")
         ),
         main_panel(
-          fluidRow(
-            column(5,
-                   mod_ranking_prov_map_ui("ranking_prov_map_1")
-                   ),
-            column(1,br()),
-            column(4,
-                   mod_ranking_prov_tables_ui("ranking_prov_tables_1")
-                   ),
-            column(2,br())
+          style = "height: calc(100vh - 70px); overflow: auto;",
+          div(
+            class = "ui grid",
+            div(
+              class = "eight wide column",
+              mod_ranking_prov_map_ui("ranking_prov_map_1")
+            ),
+            div(
+              class = "eight wide column",
+              mod_ranking_prov_tables_ui("ranking_prov_tables_1")
+            )
           )
-
-
-          # Add here the UI for the main body
-          # For example, you can add a tabsetPanel
-          # with multiple tabs
         )
-
+      )
     )
   )
-  )
 }
-
 #' Add external Resources to the Application
 #'
 #' This function is internally used to add external

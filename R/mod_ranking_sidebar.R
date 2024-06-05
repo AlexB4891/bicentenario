@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#' @import shiny shinyWidgets
+#' @import shiny shinyWidgets shiny.semantic
 mod_ranking_sidebar_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -17,27 +17,26 @@ mod_ranking_sidebar_ui <- function(id){
     HTML("<b>Alex Bajaña</b>  (OBS Business School)<br><br>"),
     HTML("<b>Kathia Pinzón</b>  (Escuela Politécnica Nacional)<br><br>"),
     HTML("<b>Paúl Yungán</b>  (TEC de Monterrey)<br><br>"),
-    radioGroupButtons(
-      inputId = ns("anio"),
+    multiple_radio(
+      input_id = ns("anio"),
       label = "Selecciona un año",
-      choices = c("2018", "2019", "2020", "2021")
+      choices = c("2018", "2019", "2020", "2021"),
+      selected = "2021"
     ),
-    virtualSelectInput(
-      inputId = ns("sector"),
+    dropdown_input(
+      input_id = ns("sector"),
       label = "Selecciona un sector productivo:",
       choices = c("Global","Comercio","Construcción","Manufactura","Minería","Servicios"),
-      width = "100%",
-      dropboxWrapper = "body",selected = "Global"
+      selected = "Global"
     ),
-    radioGroupButtons(
-      inputId = ns("metrica"),
+    multiple_radio(
+      input_id = ns("metrica"),
       label = "Selecciona una forma de medida:",
       choices = c("Media", "Mediana")
     ),
     HTML("El índice de adopción de TICS es un indicador que mide el grado de adopción de las tecnologías de la información y comunicación en las empresas. <br><br>"),
     actionButton(inputId = ns("btn"), label = "Ficha metodológica"),
     HTML("<br><br> El índice está construido en base a la Encuesta Estructural Empresarial (ENEMSE )del Instituto Nacional de Estadística y Censos (INEC).")
-
   )
 }
 
