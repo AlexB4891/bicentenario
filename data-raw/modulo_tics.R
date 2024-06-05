@@ -26,6 +26,29 @@ tabla_consol <- tabla_svy %>%
 
 modulo_tics <- tabla_consol
 
+modulo_tics <- modulo_tics %>%
+  split(.$provincia) %>%
+  map(~.x %>%
+        ungroup() %>%
+        select(anio_fiscal, des_sector,   provincia, indicador,inversion,n, personal,ventas) %>%
+        mutate(peso = inversion/sum(inversion, na.rm = TRUE),
+               valor  = indicador*peso,
+               valor2 = inversion*peso,
+               valor3 = personal*peso,
+               valor4 = ventas*peso
+
+               ) %>%
+        group_by(anio_fiscal, provincia) %>%
+        summarise(indicador = sum(valor,na.rm = TRUE),
+                  inversion = sum(valor2,na.rm = TRUE),
+                  personal = sum(valor3,na.rm = TRUE),
+                  ventas = sum(valor4,na.rm = TRUE),
+                  n = sum(n))
+        ) %>%
+  reduce(bind_rows) %>%
+  mutate(des_sector = "Global") %>%
+  bind_rows(modulo_tics)
+
 rm(tabla_svy, tabla_consol)
 
 ## code to prepare `modulo_tics` dataset goes here

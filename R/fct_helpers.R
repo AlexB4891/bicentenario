@@ -133,7 +133,7 @@ ranking_func <- function(tabla_provincia, labels) {
       fn = scales::col_numeric(
         palette = "viridis",
         domain = c(0, max(tabla_provincia$indicador)),
-        reverse = TRUE
+        reverse = FALSE
       )
     ) %>%
     gt::tab_style(

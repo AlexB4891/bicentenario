@@ -6,8 +6,24 @@ Description: App to visualize, interact and analyze the TICS adoption index. Thi
 License: MIT + file LICENSE
 Imports: 
     config (>= 0.3.1),
+    dplyr,
+    forcats,
+    ggiraph,
+    ggplot2,
     golem (>= 0.4.1),
-    shiny (>= 1.8.0)
+    gt,
+    gtExtras,
+    magrittr,
+    patchwork,
+    pkgload,
+    purrr,
+    scales,
+    sf,
+    shiny (>= 1.8.0),
+    shiny.semantic,
+    shinyWidgets,
+    stringr,
+    tibble
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
