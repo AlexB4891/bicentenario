@@ -21,6 +21,7 @@ Imports:
     sf,
     shiny (>= 1.8.0),
     shiny.semantic,
+    shinydashboard,
     shinyWidgets,
     stringr,
     tibble

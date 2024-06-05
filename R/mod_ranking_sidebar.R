@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-#' @import shiny shinyWidgets
+#' @import shiny shinyWidgets 
 mod_ranking_sidebar_ui <- function(id){
   ns <- NS(id)
   tagList(
