@@ -123,7 +123,7 @@ ranking_func <- function(tabla_provincia, labels) {
     gt::tab_header(title = "Ranking de acuerdo al indicador de adopción de TIC's",
                    subtitle = "Promedio de las variables de adopción de TIC's por provincia") %>%
     gt::cols_label(.list = labels) %>%
-    gt::cols_hide(c(provincia, matches("_se$")))
+    gt::cols_hide(c(provincia, matches("_se$"),des_sector))
 
   ranking <- ranking %>%
     gt::data_color(
