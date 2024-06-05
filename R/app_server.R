@@ -10,8 +10,9 @@ app_server <- function(input, output, session) {
 
   anio_side <- reactive(inputs_side()$anio)
   sector_side <- reactive(inputs_side()$sector)
+  metri_side <- reactive(inputs_side()$metric)
 
-  tabla_filter <- mod_ranking_prov_map_server("ranking_prov_map_1",anio = anio_side,sector = sector_side)
+  tabla_filter <- mod_ranking_prov_map_server("ranking_prov_map_1",anio = anio_side,sector = sector_side,metric = metri_side)
 
   mod_ranking_prov_tables_server("ranking_prov_tables_1",tabla_filtrada = tabla_filter)
 }

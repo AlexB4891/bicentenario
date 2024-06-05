@@ -20,11 +20,12 @@ mod_ranking_prov_map_ui <- function(id){
 #' ranking_prov_map Server Functions
 #'
 #' @noRd
-mod_ranking_prov_map_server <- function(id,anio,sector){
+mod_ranking_prov_map_server <- function(id,anio,sector,metric){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
     data("modulo_tics")
+    data("modulo_tics_alt")
     data("diccionario")
     data("shapes")
 
@@ -39,14 +40,18 @@ mod_ranking_prov_map_server <- function(id,anio,sector){
     )
 
 
-    # observeEvent(list(anio,sector) {
-    #
-    #
-    # })
+    observeEvent(metric(), {
+
+      if(metric() == "Mediana"){
+        objetos_app$tabla_original <- modulo_tics_alt
+      } else {
+        objetos_app$tabla_original <- modulo_tics
+      }
+
+    })
 
 
     tabla_filtrada <- reactive({
-
 
       objetos_app$tabla_original %>%
         dplyr::mutate(provincia = stringr::str_pad(width = 2,provincia,pad = "0")) %>%

@@ -40,11 +40,11 @@ app_ui <- function(request) {
           div(
             class = "ui grid",
             div(
-              class = "eight wide column",
+              class = "ten wide column",
               mod_ranking_prov_map_ui("ranking_prov_map_1")
             ),
             div(
-              class = "eight wide column",
+              class = "six wide column",
               mod_ranking_prov_tables_ui("ranking_prov_tables_1")
             )
           )
