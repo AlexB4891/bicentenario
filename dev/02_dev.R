@@ -39,6 +39,7 @@ golem::add_utils("helpers", with_test = TRUE)
 golem::add_js_file("script")
 golem::add_js_handler("handlers")
 golem::add_css_file("custom")
+golem::add_resource_path(prefix = "img", directoryPath = system.file("app/img", package = "bicentenario"))
 
 ## Add internal datasets ----
 ## If you have data in your package

@@ -9,6 +9,7 @@ app_ui <- function(request) {
   shinyUI(
     semanticPage(
       tags$head(
+        tags$style(type="text/css", "text {font-family: sans-serif}"),
         tags$link(rel = "stylesheet", type = "text/css", id = "bootstrapCSS",
                   href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),
         tags$script(src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
@@ -17,18 +18,18 @@ app_ui <- function(request) {
       suppressDependencies("bootstrap"),
       div(
         class = "ui grid",
-        div(
-          class = "five wide column",
-          img(src = "www/bicentenario.png", height = "100px")
-        ),
-        div(
-          class = "five wide column",
-          img(src = "www/prefectura.png", height = "100px")
-        ),
-        div(
-          class = "six wide column",
-          img(src = "www/ergos.png", height = "100px")
-        )
+     div(
+  class = "five wide column",
+  tags$img(src = "img/bicentenario.png", height = "100px")
+),
+div(
+  class = "five wide column",
+  tags$img(src = "img/prefectura.png", height = "100px")
+),
+div(
+  class = "six wide column",
+  tags$img(src = "img/ergos.png", height = "100px")
+)
       ),
       sidebar_layout(
         sidebar_panel(

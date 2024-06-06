@@ -6,6 +6,7 @@
 #' @noRd
 app_server <- function(input, output, session) {
   # Your application server logic
+
   inputs_side <- mod_ranking_sidebar_server("ranking_sidebar_1")
 
   anio_side <- reactive(inputs_side()$anio)
