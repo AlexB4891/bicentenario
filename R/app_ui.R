@@ -2,58 +2,60 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny shiny.semantic shinydashboard
+#' @import shiny shiny.semantic shinydashboard bs4Dash
 #' @noRd
 
 app_ui <- function(request) {
   shinyUI(
-    semanticPage(
-      tags$head(
-        tags$style(type="text/css", "text {font-family: sans-serif}"),
-        tags$link(rel = "stylesheet", type = "text/css", id = "bootstrapCSS",
-                  href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),
-        tags$script(src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
-      ),
+
+    bs4DashPage(
       title = "Mi aplicación",
-      suppressDependencies("bootstrap"),
-      div(
-        class = "ui grid",
-     div(
-  class = "five wide column",
-  tags$img(src = "img/bicentenario.png", height = "100px")
-),
-div(
-  class = "five wide column",
-  tags$img(src = "img/prefectura.png", height = "100px")
-),
-div(
-  class = "six wide column",
-  tags$img(src = "img/ergos.png", height = "100px")
-)
+      header = bs4DashNavbar(
+        title = "Mi aplicación"
       ),
-      sidebar_layout(
-        sidebar_panel(
-          style = "width: 300px;",
-          mod_ranking_sidebar_ui("ranking_sidebar_1")
+      sidebar = bs4DashSidebar(
+        width = "300px",
+        sidebarMenu(
+          mod_ranking_sidebar_ui("ranking_sidebar_1"),
+          mod_modal_ui("modal_1")
+        )
+      ),
+      body = bs4DashBody(
+        tags$head(
+          tags$style(type = "text/css", "text {font-family: sans-serif}")
         ),
-        main_panel(
-          style = "height: calc(100vh - 70px); overflow: auto;",
-          div(
-            class = "ui grid",
-            div(
-              class = "ten wide column",
-              mod_ranking_prov_map_ui("ranking_prov_map_1")
-            ),
-            div(
-              class = "six wide column",
-              mod_ranking_prov_tables_ui("ranking_prov_tables_1")
-            )
+        fluidRow(
+          column(
+            width = 5,
+            tags$img(src = "img/bicentenario.png", height = "100px")
+          ),
+          column(
+            width = 5,
+            tags$img(src = "img/prefectura.png", height = "100px")
+          ),
+          column(
+            width = 6,
+            tags$img(src = "img/ergos.png", height = "100px")
+          )
+        ),
+        fluidRow(
+          column(
+            width = 10,
+            mod_ranking_prov_map_ui("ranking_prov_map_1"),
+            mod_foda_f_ui("foda_f_1")
+          ),
+          column(
+            width = 6,
+            mod_ranking_prov_tables_ui("ranking_prov_tables_1")
           )
         )
-      )
+      ),
+      controlbar = bs4DashControlbar(),
+      footer = bs4DashFooter()
     )
-  )
-}
+
+
+)}
 #' Add external Resources to the Application
 #'
 #' This function is internally used to add external
@@ -68,6 +70,10 @@ golem_add_external_resources <- function() {
     app_sys("app/www")
   )
 
+  add_resource_path(
+    "img",
+    app_sys("app/img")
+  )
   tags$head(
     favicon(),
     bundle_resources(

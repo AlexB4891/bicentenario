@@ -24,6 +24,7 @@ golem::add_module(name = "ranking_prov_tables", with_test = TRUE) # Name of the 
 golem::add_module(name = "ranking_prov_map", with_test = TRUE) # Name of the module
 golem::add_module(name = "ranking_texts", with_test = TRUE) # Name of the module
 golem::add_module(name = "ranking_sidebar", with_test = TRUE) # Name of the module
+golem::add_module(name = "modal", with_test = TRUE) # Name of the module
 golem::add_module(name = "foda_f", with_test = TRUE) # Name of the module
 golem::add_module(name = "foda_o", with_test = TRUE) # Name of the module
 golem::add_module(name = "foda_d", with_test = TRUE) # Name of the module
@@ -46,7 +47,7 @@ golem::add_resource_path(prefix = "img", directoryPath = system.file("app/img", 
 usethis::use_data_raw(name = "modulo_tics", open = TRUE)
 usethis::use_data_raw(name = "shapes", open = TRUE)
 usethis::use_data_raw(name = "diccionario", open = TRUE)
-
+usethis::use_data_raw(name = "elastici", open = TRUE)
 
 ## Tests ----
 ## Add one line by test you want to create

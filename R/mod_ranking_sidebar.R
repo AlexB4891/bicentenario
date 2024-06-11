@@ -35,7 +35,7 @@ mod_ranking_sidebar_ui <- function(id){
       choices = c("Media", "Mediana")
     ),
     HTML("El índice de adopción de TICS es un indicador que mide el grado de adopción de las tecnologías de la información y comunicación en las empresas. <br><br>"),
-    actionButton(inputId = ns("btn"), label = "Ficha metodológica"),
+
     HTML("<br><br> El índice está construido en base a la Encuesta Estructural Empresarial (ENEMSE )del Instituto Nacional de Estadística y Censos (INEC).")
 
   )
@@ -48,11 +48,13 @@ mod_ranking_sidebar_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+
      return(reactive({
       list(
         anio = input$anio,
         sector = input$sector,
         metric = input$metrica
+
       )
     }))
 

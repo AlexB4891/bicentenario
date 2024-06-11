@@ -1,0 +1,10 @@
+name: bicentenario
+title: bicentenario
+username: ergostats
+account: ergostats
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12137933
+bundleId: 8710102
+url: https://ergostats.shinyapps.io/bicentenario/
+version: 1
