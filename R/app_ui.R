@@ -12,18 +12,28 @@ app_ui <- function(request) {
         tags$style(type="text/css", "text {font-family: sans-serif}")
       ),
       title = "Mi aplicación",
-      div(
-          tags$img(src = "bicentenario.png", height = "100px"),
-          tags$img(src = "prefectura.png", height = "100px"),
-          tags$img(src = "ergos.png", height = "100px")
-        )
-      ),
       sidebar_layout(
         sidebar_panel(
           style = "width: 300px;",
           mod_ranking_sidebar_ui("ranking_sidebar_1")
         ),
         main_panel(
+          div(
+            class = "ui grid",
+            div(
+              class = "five wide column",
+              tags$img(src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdAtExJwW0cPeqAcLWa1LKSUYkT0R965rbAg&s',
+                       style = 'height: 100px;')
+            ),
+            div(
+              class = "five wide column",
+              tags$img(src = "https://www.manabi.gob.ec/wp-content/uploads/2020/04/logogris2.png", height = "100px")
+            ),
+            div(
+              class = "six wide column",
+              tags$img(src = "https://github.com/AlexB4891/bicentenario/blob/ficha/inst/app/img/ergos.png?raw=true", height = "100px")
+            )
+          ),
           style = "height: calc(100vh - 70px); overflow: auto;",
           div(
             class = "ui grid",
@@ -39,7 +49,7 @@ app_ui <- function(request) {
         )
       )
     )
-
+  )
 }
 #' Add external Resources to the Application
 #'
