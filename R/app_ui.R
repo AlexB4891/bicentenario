@@ -39,7 +39,7 @@ app_ui <- function(request) {
         )
       )
     )
-  )
+
 }
 #' Add external Resources to the Application
 #'
@@ -54,11 +54,19 @@ golem_add_external_resources <- function() {
     "www",
     app_sys("app/www")
   )
+  add_resource_path(
+    "img",
+    app_sys("app/img")
+  )
 
   tags$head(
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
+      app_title = "bicentenario"
+    ),
+    bundle_resources(
+      path = app_sys("app/img"),
       app_title = "bicentenario"
     )
     # Add here other external resources
