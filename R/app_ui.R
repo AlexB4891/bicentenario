@@ -9,27 +9,14 @@ app_ui <- function(request) {
   shinyUI(
     semanticPage(
       tags$head(
-        tags$style(type="text/css", "text {font-family: sans-serif}"),
-        tags$link(rel = "stylesheet", type = "text/css", id = "bootstrapCSS",
-                  href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),
-        tags$script(src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+        tags$style(type="text/css", "text {font-family: sans-serif}")
       ),
       title = "Mi aplicación",
-      suppressDependencies("bootstrap"),
       div(
-        class = "ui grid",
-     div(
-  class = "five wide column",
-  tags$img(src = "img/bicentenario.png", height = "100px")
-),
-div(
-  class = "five wide column",
-  tags$img(src = "img/prefectura.png", height = "100px")
-),
-div(
-  class = "six wide column",
-  tags$img(src = "img/ergos.png", height = "100px")
-)
+          tags$img(src = "bicentenario.png", height = "100px"),
+          tags$img(src = "prefectura.png", height = "100px"),
+          tags$img(src = "ergos.png", height = "100px")
+        )
       ),
       sidebar_layout(
         sidebar_panel(
@@ -41,11 +28,11 @@ div(
           div(
             class = "ui grid",
             div(
-              class = "ten wide column",
+              class = "eight wide column",
               mod_ranking_prov_map_ui("ranking_prov_map_1")
             ),
             div(
-              class = "six wide column",
+              class = "eight wide column",
               mod_ranking_prov_tables_ui("ranking_prov_tables_1")
             )
           )
