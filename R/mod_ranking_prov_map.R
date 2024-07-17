@@ -6,13 +6,58 @@
 #'
 #' @noRd
 #'
-#' @import shiny dplyr ggplot2 ggiraph stringr magrittr
+#' @import shiny dplyr ggplot2 ggiraph stringr magrittr fomantic.plus
 mod_ranking_prov_map_ui <- function(id){
   ns <- NS(id)
   tagList(
     tags$div(
       style = "width:100%; height:100%;",
-    ggiraph::girafeOutput(ns("mapa"))
+    ggiraph::girafeOutput(ns("mapa")),
+    div(class = "ui four column grid",
+        div(class = "column",
+            div(class = "ui raised segment",
+
+                addPopup(
+                  fui_el$label(id = "help_label", class = "small circular", "?"),
+                  "This can be used as a help icon in a shiny app",
+                  inverted = TRUE
+                ),
+
+                h2("Título 1"),
+                h4("Subtítulo 1"),
+                div(class = "ui huge text",
+                    "50% ", span(class = "ui emoticon", "😀")
+                )
+            )
+        ),
+        div(class = "column",
+            div(class = "ui raised segment",
+                h2("Título 2"),
+                h4("Subtítulo 2"),
+                div(class = "ui huge text",
+                    "75% ", span(class = "ui emoticon", "🚀")
+                )
+            )
+        ),
+        div(class = "column",
+            div(class = "ui raised segment",
+                h2("Título 3"),
+                h4("Subtítulo 3"),
+                div(class = "ui huge text",
+                    "20% ", span(class = "ui emoticon", "🌧️")
+                )
+            )
+        ),
+        div(class = "column",
+            div(class = "ui raised segment",
+                h2("Título 4"),
+                h4("Subtítulo 4"),
+                div(class = "ui huge text",
+                    "90% ", span(class = "ui emoticon", "🌞")
+                )
+            )
+        )
+    )
     )
   )
 }
