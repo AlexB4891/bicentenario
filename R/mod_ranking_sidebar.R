@@ -11,17 +11,25 @@
 mod_ranking_sidebar_ui <- function(id){
   ns <- NS(id)
   tagList(
+    tags$head(
+      tags$style(HTML("
+        .sidebar-input { width: 100%; }
+        .sidebar-link { margin-bottom: 5px; }
+      "))
+    ),
     h2("Índice de Adopción de TICS"),
     h3("Caso aplicado a la provincia de Manabí"),
     h4("Autores:"),br(),
     HTML("<b>Alex Bajaña</b>  (OBS Business School)<br><br>"),
     HTML("<b>Kathia Pinzón</b>  (Escuela Politécnica Nacional)<br><br>"),
     HTML("<b>Paúl Yungán</b>  (TEC de Monterrey)<br><br>"),
-    shiny.semantic::slider_input(
+    div(
+      class = "sidebar-input",
+      shiny.semantic::slider_input(
       input_id   = ns("anio"),
       step = 1,
       value = 2021,min = 2018,max = 2021
-    ),
+    )),
     shiny.semantic::selectInput(
       inputId = ns("sector"),
       label = "Selecciona un sector productivo:",
@@ -37,9 +45,20 @@ mod_ranking_sidebar_ui <- function(id){
       choices_value = c("Media", "Mediana")
     ),
     br(),
-    HTML("El índice de adopción de TICS es un indicador que mide el grado de adopción de las tecnologías de la información y comunicación en las empresas. <br><br>"),
-    shiny.semantic::action_button(input_id = ns("btn"), label = "Ficha metodológica"),
-    HTML("<br><br> El índice está construido en base a la Encuesta Estructural Empresarial (ENEMSE )del Instituto Nacional de Estadística y Censos (INEC).")
+    HTML("El índice de adopción de TICS es un indicador que mide el grado de adopción de
+          las tecnologías de la información y comunicación en las empresas. <br><br>"),
+    div(class = "sidebar-link",
+      tags$a(href = "https://www.ecuadorencifras.gob.ec/encuesta-estructural-empresarial-2021/",
+             target = "_blank", "Encuesta Estructural Empresarial")
+    ),
+    div(class = "sidebar-link",
+      tags$a(href = "https://www.pactomundial.org/ods/9-industria-innovacion-e-infraestructura/",
+             target = "_blank", "Objetivo ODS sobre Innovación")
+    ),
+    div(class = "sidebar-link",
+      tags$a(href = "https://www.arcotel.gob.ec/wp-content/uploads/2022/08/Agenda-transformacion-digital-2022-2025.pdf", target = "_blank", "Agenda 4.0")
+    ),
+    shiny.semantic::action_button(input_id = ns("btn"), label = "Ficha metodológica")
 
   )
 }
