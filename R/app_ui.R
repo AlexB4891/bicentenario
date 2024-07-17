@@ -15,7 +15,8 @@ app_ui <- function(request) {
       sidebar_layout(
         sidebar_panel(
           style = "width: 300px;",
-          mod_ranking_sidebar_ui("ranking_sidebar_1")
+          mod_ranking_sidebar_ui("ranking_sidebar_1"),
+          mod_modal_ui("modal_1")
         ),
         main_panel(
           div(

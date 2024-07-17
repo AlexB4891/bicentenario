@@ -57,8 +57,7 @@ mod_ranking_sidebar_ui <- function(id){
     ),
     div(class = "sidebar-link",
       tags$a(href = "https://www.arcotel.gob.ec/wp-content/uploads/2022/08/Agenda-transformacion-digital-2022-2025.pdf", target = "_blank", "Agenda 4.0")
-    ),
-    shiny.semantic::action_button(input_id = ns("btn"), label = "Ficha metodológica")
+    )
 
   )
 }
