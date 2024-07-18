@@ -2,6 +2,7 @@
 
 export(run_app)
 import(dplyr)
+import(fomantic.plus)
 import(ggiraph)
 import(ggplot2)
 import(magrittr)

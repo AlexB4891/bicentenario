@@ -21,6 +21,7 @@ attachment::att_amend_desc()
 ## Add modules ----
 ## Create a module infrastructure in R/
 golem::add_module(name = "ranking_prov_tables", with_test = TRUE) # Name of the module
+golem::add_module(name = "modal", with_test = TRUE) # Name of the module
 golem::add_module(name = "ranking_prov_map", with_test = TRUE) # Name of the module
 golem::add_module(name = "ranking_texts", with_test = TRUE) # Name of the module
 golem::add_module(name = "ranking_sidebar", with_test = TRUE) # Name of the module

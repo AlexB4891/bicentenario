@@ -14,8 +14,10 @@ app_ui <- function(request) {
       title = "Mi aplicación",
       sidebar_layout(
         sidebar_panel(
-          style = "width: 300px;",
-          mod_ranking_sidebar_ui("ranking_sidebar_1")
+          # style = "width: 300px;",
+          mod_ranking_sidebar_ui("ranking_sidebar_1"),
+          div(class = "sidebar-content",
+          mod_modal_ui("modal_1"))
         ),
         main_panel(
           div(
@@ -34,7 +36,32 @@ app_ui <- function(request) {
               tags$img(src = "https://github.com/AlexB4891/bicentenario/blob/ficha/inst/app/img/ergos.png?raw=true", height = "100px")
             )
           ),
-          style = "height: calc(100vh - 70px); overflow: auto;",
+          # style = "height: calc(100vh - 70px); overflow: auto;",
+          div(class = "ui grid",
+              div(
+                class = "eight wide column",
+                  div(class = "ui raised segment",
+                      div(
+                        a(class="ui green ribbon label", "Ecuador y las TICS"),
+                        p("¡Bienvenidos a nuestra aplicación! Este mapa interactivo ilustra la distribución geográfica del
+                          índice de adopción de Tecnologías de la Información y la Comunicación (TIC) en Ecuador.
+                          Utilizando una paleta de colores, el mapa revela qué tan intensivo es el uso promedio de las TIC en
+                          cada provincia. Cada empresa dentro de una provincia tiene su propio nivel de adopción, pero
+                          aquí presentamos un indicador agregado que permite comparar el comportamiento general entre
+                          las distintas provincias del país. Nuestro objetivo es ofrecer una visión clara y
+                          comprensible de cómo se están utilizando las TIC en todo Ecuador, facilitando el análisis y la
+                          toma de decisiones informadas.")
+                      ))),
+              div(
+                class = "eight wide column",
+                div(class = "ui raised segment",
+                    div(
+                      a(class="ui red ribbon label", "¿Comó funciona?"),
+                      p("Nuestro mapa interactivo se basa en el ranking de adopción de TIC's en las provincias de Ecuador, ilustrado en esta tabla. El índice de uso de TIC's, mostrado en un gradiente de colores, destaca la intensidad del uso promedio de estas tecnologías en cada provincia. La tabla clasifica las provincias según su índice de adopción de TIC's y proporciona variables clave como inversión en TIC, personal en TIC, ventas en línea y número de empresas. Estas variables se relacionan directamente con el índice, ofreciendo una visión integral y comparativa del uso de TIC's, y permitiendo un análisis estratégico del desarrollo tecnológico en todo el país.")
+                    ))
+              )
+
+              ),
           div(
             class = "ui grid",
             div(
