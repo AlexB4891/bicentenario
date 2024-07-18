@@ -39,6 +39,7 @@ map_histogram <- function(table_province,
                    strip.text = ggplot2::element_text(family = 'Anton',
                                                       size = 10)) +
     ggplot2::labs(title = title, subtitle = subtitle) +
+    ggplot2::theme_minimal() +
     ggplot2::theme(
       plot.title = ggplot2::element_text(family = 'Anton', size = 20),
       plot.subtitle = ggplot2::element_text(family = 'Anton'),
@@ -51,8 +52,7 @@ map_histogram <- function(table_province,
         color = 'black'
       ),
       strip.background = ggplot2::element_rect(fill = 'white')
-    ) +
-    ggplot2::theme_minimal()
+    )
 
 
   tabla_barras <- datos_map %>%

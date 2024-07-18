@@ -1,1 +1,6 @@
- 
+.girafe, .girafe_container_std {
+    margin-left: auto;
+    margin-top: -20px;
+    margin-right: auto;
+}
+

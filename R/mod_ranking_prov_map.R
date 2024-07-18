@@ -13,7 +13,7 @@ mod_ranking_prov_map_ui <- function(id){
     tags$div(
       style = "width:100%; height:100%;",
     ggiraph::girafeOutput(ns("mapa")),
-    div(class = "ui four column grid",
+    div(class = "ui two column grid",
         div(class = "column",
             div(class = "ui raised segment",
 
