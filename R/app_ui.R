@@ -66,7 +66,8 @@ app_ui <- function(request) {
             class = "ui grid",
             div(
               class = "eight wide column",
-              mod_ranking_prov_map_ui("ranking_prov_map_1")
+              mod_ranking_prov_map_ui("ranking_prov_map_1"),
+              mod_ranking_texts_ui("ranking_texts_1")
             ),
             div(
               class = "eight wide column",
