@@ -10,13 +10,13 @@
 mod_ranking_texts_ui <- function(id){
   ns <- NS(id)
   tagList(
-    tags$head(
-      tags$style(HTML("
-        .cajas {
-          margin-top: -300px !important;
-        }
-      "))
-    ),
+    # tags$head(
+    #   tags$style(HTML("
+    #     .cajas {
+    #       margin-top: -300px !important;
+    #     }
+    #   "))
+    # ),
     div(class = "cajas",uiOutput(ns("cajas"))
         )
 

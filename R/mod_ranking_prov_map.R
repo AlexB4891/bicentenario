@@ -12,7 +12,8 @@ mod_ranking_prov_map_ui <- function(id){
   tagList(
     tags$div(
       style = "width:100%; height:100%;",
-    ggiraph::girafeOutput(ns("mapa"))
+    ggiraph::girafeOutput(ns("mapa")),
+    mod_ranking_texts_ui(ns("ranking_texts_1"))
     )
   )
 }
@@ -28,6 +29,15 @@ mod_ranking_prov_map_server <- function(id,anio,sector,metric){
     data("modulo_tics_alt")
     data("diccionario")
     data("shapes")
+
+    # Modulos llamados:
+
+    observeEvent(list(anio,sector),{
+
+      mod_ranking_texts_server("ranking_texts_1",anio = anio,sector = sector)
+
+    })
+
 
     # Central fuente de datos:
 

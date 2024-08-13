@@ -15,7 +15,7 @@ app_server <- function(input, output, session) {
 
   tabla_filter <- mod_ranking_prov_map_server("ranking_prov_map_1",anio = anio_side,sector = sector_side,metric = metri_side)
 
-  mod_ranking_texts_server("ranking_texts_1",anio = anio_side,sector = sector_side)
+  # mod_ranking_texts_server("ranking_texts_1",anio = anio_side,sector = sector_side)
 
   mod_ranking_prov_tables_server("ranking_prov_tables_1",tabla_filtrada = tabla_filter)
 
