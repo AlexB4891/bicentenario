@@ -11,6 +11,10 @@ modulo_tics <- read_tsv("C:/Users/alex_ergostats/OneDrive/Documentos/ergostats_r
 
 base_tratada <- read_rds("C:/Users/alex_ergostats/OneDrive/Documentos/ergostats_research/uncertainty_paper/bases/procesadas/base_trabajo.rds")
 
+codificacion <- readxl::read_excel("C:/Users/alex_ergostats/Documents/geo_stats_2024_nb/data/CODIFICACIÓN_2022.xlsx")
+
+# data(modulo_tics)
+
 data_ %>%
   left_join(data_2) %>%
   count(grupo)
@@ -90,7 +94,8 @@ inversion_provincial <- inversion_completo %>%
   left_join(factores) %>%
   group_by(des_sector,anio_fiscal,provincia) %>%
   summarise(inversion = mean(inversion_int,na.rm = T),
-            n = sum(f_exp))
+            n = sum(f_exp)) %>%
+  mutate(inversion = if_else(is.na(inversion)|is.nan(inversion),0,inversion))
 
 invertion_nacional <- inversion_provincial %>%
   ungroup() %>%
@@ -110,10 +115,13 @@ mercado_completo <- modulo_tics %>%
          provincia,
          all_of(mercado_var)) %>%
   pivot_longer(cols = all_of(mercado_var),names_to = "var",values_to = "val") %>%
+  mutate(val = replace_na(val, 0)) %>%
   filter(var %in% c("tic3_1_1_ventas","tic3_2_1_compras")) %>%
+  arrange(id_empresa,des_sector,anio_fiscal,provincia,var) %>%
   group_by(id_empresa,des_sector,anio_fiscal,provincia) %>%
   summarise(mercado = reduce(val,`/`)) %>%
-  ungroup()
+  ungroup() %>%
+  mutate(mercado = if_else(is.na(mercado)|is.nan(mercado) | is.infinite(mercado),0,mercado))
 
 mercado_provincial <- mercado_completo %>%
   left_join(factores) %>%
@@ -153,6 +161,8 @@ personal_tics <- personal_tics %>%
                 ~replace_na(.x,0)),
          personal_ratio = case_when(
            pers_ocup == 0 ~ 0,
+           is.na(pers_ocup) | is.na(personal_tics) ~ 0,
+           is.na(pers_ocup) & is.na(personal_tics) ~ 0,
            TRUE ~ personal_tics/pers_ocup)) %>%
   filter(personal_ratio > 0)
 
@@ -218,5 +228,18 @@ dimensiones_nacionales <- list("Gesion" = gestion_nacional,
   #       select(-n)) %>%
   reduce(full_join)
 
+
+dimensiones_nacionales <- dimensiones_nacionales %>%
+  mutate(across(where(is.numeric), replace_na,0))
+
+dimensiones_provinciales <- dimensiones_provinciales %>%
+  mutate(across(where(is.numeric), replace_na,0))
+
+codificacion <- codificacion %>%
+  mutate(DPA_DESPRO = as.factor(DPA_DESPRO)) %>%
+  select(DPA_PROVIN, DPA_DESPRO) %>%
+  distinct()
+
+usethis::use_data(codificacion, overwrite = TRUE)
 usethis::use_data(dimensiones_provinciales, overwrite = TRUE)
 usethis::use_data(dimensiones_nacionales, overwrite = TRUE)
