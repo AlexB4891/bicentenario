@@ -9,6 +9,7 @@ data_2 <- read_excel("C:/Users/alex_ergostats/OneDrive/Documentos/ergostats_rese
 
 modulo_tics <- read_tsv("C:/Users/alex_ergostats/OneDrive/Documentos/ergostats_research/uncertainty_paper/bases/procesadas/modulo_tics_indicador.txt")
 
+base_tratada <- read_rds("C:/Users/alex_ergostats/OneDrive/Documentos/ergostats_research/uncertainty_paper/bases/procesadas/base_trabajo.rds")
 
 data_ %>%
   left_join(data_2) %>%
@@ -28,6 +29,12 @@ lista_gupos <- data_ %>%
 gestion_var <- lista_gupos %>%
   pluck("Gestion", "codigo_de_la_variable")
 
+factores <- modulo_tics %>%
+  select(id_empresa,
+         des_sector,
+         anio_fiscal,
+         provincia,
+         f_exp)
 
 gesition_completo <- modulo_tics %>%
   select(id_empresa,
@@ -43,9 +50,10 @@ gesition_completo <- modulo_tics %>%
   mutate(tasa_gestion = gestion/10)
 
 gestion_provincial <- gesition_completo %>%
+  left_join(factores) %>%
   group_by(des_sector,anio_fiscal,provincia) %>%
   summarise(tasa_gestion = mean(tasa_gestion,na.rm = T),
-            n = n_distinct(id_empresa))
+            n = sum(f_exp))
 
 
 gestion_nacional <- gestion_provincial %>%
@@ -79,9 +87,10 @@ inversion_completo <-
       inversion_int = as.integer(inversion))
 
 inversion_provincial <- inversion_completo %>%
+  left_join(factores) %>%
   group_by(des_sector,anio_fiscal,provincia) %>%
   summarise(inversion = mean(inversion_int,na.rm = T),
-            n = n_distinct(id_empresa))
+            n = sum(f_exp))
 
 invertion_nacional <- inversion_provincial %>%
   ungroup() %>%
@@ -107,9 +116,10 @@ mercado_completo <- modulo_tics %>%
   ungroup()
 
 mercado_provincial <- mercado_completo %>%
+  left_join(factores) %>%
   group_by(des_sector,anio_fiscal,provincia) %>%
   summarise(mercado = mean(mercado,na.rm = T),
-            n = n_distinct(id_empresa))
+            n = sum(f_exp))
 
 mercado_nacional <- mercado_provincial %>%
   # ungroup() %>%
@@ -121,11 +131,92 @@ mercado_nacional <- mercado_provincial %>%
 # - Promedio de provincias
 
 personal_var <- lista_gupos %>%
-  pluck("Personal TIC","codigo_de_la_variable")
+  pluck("Personal TIC") %>%
+  filter(tipo_variable != "Categórica") %>%
+  pull(codigo_de_la_variable)
+
+personal_total <- base_tratada %>%
+  select(id_empresa,anio_fiscal,
+         pers_ocup_h,pers_ocup_m) %>%
+  mutate(pers_ocup = pers_ocup_h + pers_ocup_m,
+         across(c(id_empresa,anio_fiscal),~as.numeric(.x)))
+
+personal_tics <- modulo_tics %>%
+  rowwise() %>%
+  mutate(personal_tics = sum(across(c(tic6_1_1_pers_ocup_especialista_h,
+                                      tic6_1_1_pers_ocup_especialista_m)),na.rm = T)) %>%
+  left_join(personal_total)
+
+personal_tics <- personal_tics %>%
+  select(id_empresa, anio_fiscal, personal_tics, pers_ocup, des_sector, cod_sector, provincia) %>%
+  mutate(across(c(personal_tics,pers_ocup),
+                ~replace_na(.x,0)),
+         personal_ratio = case_when(
+           pers_ocup == 0 ~ 0,
+           TRUE ~ personal_tics/pers_ocup)) %>%
+  filter(personal_ratio > 0)
+
+personal_provincial <- personal_tics %>%
+  left_join(factores) %>%
+  group_by(des_sector,anio_fiscal,provincia) %>%
+  summarise(personal_ratio = mean(personal_ratio,na.rm = T),
+            n = sum(f_exp))
+
+personal_nacional <- personal_provincial %>%
+  ungroup() %>%
+  group_by(provincia,anio_fiscal) %>%
+  summarise(personal_ratio = weighted.mean(personal_ratio,w = n,na.rm = T))
 
 # Uso TIC
 # - Cuantas de las 51 formas de uso tiene por empresa
 # - Promedio para las empresas de una misma provincia
 
+uso_var <- lista_gupos %>%
+  pluck("Uso TIC") %>%
+  filter(tipo_variable == "Categórica") %>%
+  pull(codigo_de_la_variable)
 
-usethis::use_data(radares, overwrite = TRUE)
+uso_completo <- modulo_tics %>%
+  select(id_empresa,
+         des_sector,
+         anio_fiscal,
+         provincia,
+         all_of(uso_var)) %>%
+  mutate(across(all_of(uso_var), ~as.numeric(.x %in% c("SI","Si")))) %>%
+  pivot_longer(cols = all_of(uso_var),names_to = "var",values_to = "val") %>%
+  group_by(id_empresa,des_sector,anio_fiscal,provincia) %>%
+  summarise(uso = sum(val,na.rm = T)) %>%
+  ungroup() %>%
+  mutate(tasa_uso = uso/51)
+
+uso_provincial <- uso_completo %>%
+  left_join(factores) %>%
+  group_by(des_sector,anio_fiscal,provincia) %>%
+  summarise(tasa_uso = mean(tasa_uso,na.rm = T),
+            n = sum(f_exp))
+
+uso_nacional <- uso_provincial %>%
+  ungroup() %>%
+  group_by(provincia,anio_fiscal) %>%
+  summarise(tasa_uso = weighted.mean(tasa_uso,w = n,na.rm = T))
+
+dimensiones_provinciales <- list("Gesion" = gestion_provincial,
+                     "Inversion" = inversion_provincial,
+                     "Mercado" = mercado_provincial,
+                     "Personal" = personal_provincial,
+                     "Uso" = uso_provincial) %>%
+  map(~.x %>%
+         select(-n)) %>%
+  reduce(full_join)
+
+dimensiones_nacionales <- list("Gesion" = gestion_nacional,
+                   "Inversion" = invertion_nacional,
+                   "Mercado" = mercado_nacional,
+                   "Personal" = personal_nacional,
+                   "Uso" = uso_nacional) %>%
+  # map(~.x %>%
+  #       select(-n)) %>%
+  reduce(full_join)
+
+usethis::use_data(dimensiones_provinciales, overwrite = TRUE)
+usethis::use_data(dimensiones_nacionales, overwrite = TRUE)
