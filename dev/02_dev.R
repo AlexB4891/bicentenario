@@ -29,6 +29,7 @@ golem::add_module(name = "foda_f", with_test = TRUE) # Name of the module
 golem::add_module(name = "foda_o", with_test = TRUE) # Name of the module
 golem::add_module(name = "foda_d", with_test = TRUE) # Name of the module
 golem::add_module(name = "foda_a", with_test = TRUE) # Name of the module
+golem::add_module(name = "radares", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*

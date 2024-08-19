@@ -17,7 +17,10 @@ app_server <- function(input, output, session) {
 
   # mod_ranking_texts_server("ranking_texts_1",anio = anio_side,sector = sector_side)
 
-  mod_ranking_prov_tables_server("ranking_prov_tables_1",tabla_filtrada = tabla_filter)
+  mod_ranking_prov_tables_server("ranking_prov_tables_1",
+                                 tabla_filtrada = tabla_filter)
 
   mod_modal_server("modal_1")
+
+  mod_radares_server("radares_1",anio = anio_side,sector = sector_side)
 }

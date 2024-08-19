@@ -11,8 +11,7 @@ mod_ranking_prov_tables_ui <- function(id){
   ns <- NS(id)
   tagList(
     tags$div(
-      style = "width:100%; height:100%; overflow-x: scroll'",
-      gt::gt_output(ns("tabla_prov"))
+      DT::DTOutput(ns("tabla_prov"))
     )
   )
 }
@@ -24,17 +23,14 @@ mod_ranking_prov_tables_server <- function(id,tabla_filtrada){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    output$tabla_prov <- gt::render_gt({
+    output$tabla_prov <- DT::renderDT({
 
-      etiquqetas <- c("indicador" = "Indicador de uso de TIC",
-                      "inversion" = "Inversión en TIC (Miles USD)",
-                      "personal" = "Personal en TIC",
-                      "ventas" = "Ventas en línea (Miles USD)",
-                      "n" = "Número de empresas")
+      labels <- c("Ranking", "Provincia", "Indicador","Empresas")
 
 
-      ranking_func(tabla_filtrada(),
-                   labels = etiquqetas)
+      ranking_func(tabla_filtrada() ,
+                   labels = labels
+                   )
 
 
 

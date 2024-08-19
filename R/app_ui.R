@@ -9,7 +9,29 @@ app_ui <- function(request) {
   shinyUI(
     semanticPage(
       tags$head(
-        tags$style(type="text/css", "text {font-family: sans-serif}")
+        tags$style(type="text/css", "text {font-family: sans-serif}"),
+        tags$style( "
+ #smallbox {
+            color: #3D3D3D;
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            height: 100%;
+          }
+          #bigbox {
+            color: #3D3D3D;
+            background-color: #F5F5F5;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px;
+            display: flex;
+            align-items: flex-start;
+          }
+          .flex-container {
+            display: flex;
+            align-items: flex-start;
+          }
+")
       ),
       title = "Mi aplicación",
       sidebar_layout(
@@ -63,14 +85,24 @@ app_ui <- function(request) {
 
               ),
           div(
-            class = "ui grid",
+            id = "bigbox",
+            class = "ui grid flex-container",
             div(
+              id = "smallbox",
               class = "eight wide column",
               mod_ranking_prov_map_ui("ranking_prov_map_1")
             ),
             div(
+              id = "smallbox",
               class = "eight wide column",
               mod_ranking_prov_tables_ui("ranking_prov_tables_1")
+            )
+          ),
+          div(
+            class = "ui grid",
+            div(
+              class = "sixteen wide column",
+              mod_radares_ui("radares_1")
             )
           )
         )

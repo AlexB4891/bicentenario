@@ -108,43 +108,189 @@ map_histogram <- function(table_province,
 
 ranking_func <- function(tabla_provincia, labels) {
 
+  # Ordenar y agregar columna de ranking
   tabla_provincia <- tabla_provincia %>%
     dplyr::arrange(desc(indicador)) %>%
     tibble::rowid_to_column(var = "Ranking")
 
-  ranking <- tabla_provincia %>%
-    dplyr::select(Ranking,provincia_label, dplyr::everything()) %>%
-    gt::gt() %>%
-    gt::fmt_number(columns = vars(indicador), decimals = 2) %>%
-    gt::fmt_number(columns = vars(n), decimals = 0) %>%
-    gt::fmt_number(columns = vars(personal), decimals = 0) %>%
-    gt::fmt_currency(columns = vars(inversion),currency = "USD", decimals = 2) %>%
-    gt::fmt_currency(columns = vars( ventas ),currency = "USD", decimals = 2) %>%
-    gt::tab_header(title = "Ranking de acuerdo al indicador de adopción de TIC's",
-                   subtitle = "Promedio de las variables de adopción de TIC's por provincia") %>%
-    gt::cols_label(.list = labels) %>%
-    gt::cols_hide(c(provincia, matches("_se$"),des_sector))
+  # browser()
 
+  # Seleccionar y renombrar columnas
+  tabla_provincia <- tabla_provincia %>%
+    dplyr::ungroup() %>%
+    dplyr::select(Ranking, provincia_label, indicador,n) %>%
+    dplyr::rename_with(.cols = everything(),~ labels )
+
+  # Crear tabla interactiva con DT
+  ranking <- DT::datatable(
+    tabla_provincia,
+    options = list(
+      pageLength = 15,
+      autoWidth = TRUE,
+      dom = 'Bfrtip',
+      buttons = c('copy', 'csv', 'excel', 'pdf', 'print')
+    )
+  )
+
+  # Formatear columnas numéricas y de moneda
   ranking <- ranking %>%
-    gt::data_color(
-      columns = indicador,
-      fn = scales::col_numeric(
-        palette = "viridis",
-        domain = c(0, max(tabla_provincia$indicador)),
-        reverse = FALSE
+    DT::formatRound(columns = 'Indicador', digits = 3) %>%
+    DT::formatRound(columns = 'Empresas', digits = 0)
+
+
+  # Aplicar formato condicional a la columna indicador
+  ranking <- ranking %>%
+    DT::formatStyle(
+      'Indicador',
+      backgroundColor = DT::styleInterval(
+        seq(0, max(tabla_provincia$Indicador), length.out = nrow(tabla_provincia)-1),
+        viridis::viridis(nrow(tabla_provincia))
       )
     ) %>%
-    gt::tab_style(
-      style = gt::cell_fill(color = "#2dc937", alpha = 0.5),
-      locations = purrr::map2(.x = dplyr::select(tabla_provincia,provincia_label),
-                              .y = names(dplyr::select(tabla_provincia,provincia_label)),
-                              .f = function(.x,.y) {
-                                gt::cells_body(columns = .y,
-                                               rows = which(.x == "Manabí" ))
-                              }
+    DT::formatStyle(
+      'Provincia',
+      target = 'row',
+      backgroundColor = DT::styleEqual(
+        "Manabí",
+        '#0c9010'  # El color que deseas para resaltar el valor
       )
-    ) %>%
-    gtExtras::gt_theme_538()
+    )
 
   return(ranking)
+
 }
+
+
+
+#' Generar datos para radares
+#'
+#' @param tabla
+#' @param anio
+#' @param sector
+#' @param filtro
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' @ImportFrom dplyr filter mutate select left_join ungroup across rename group_by summarise
+#' @ImportFrom scales rescale
+#' @ImportFrom stringr str_pad str_c
+#' @ImportFrom purrr map
+#' @ImportFrom tidyr replace_na
+generar_radares <- function(anio, sector, filtro = NULL){
+
+  data("modulo_tics")
+  data("codificacion")
+
+  if(sector == "Global"){
+    data("dimensiones_nacionales")
+
+    tabla <- dimensiones_nacionales
+
+    # rm(dimensiones_nacionales)
+
+    tabla <- tabla %>%
+      dplyr::filter(anio_fiscal == anio) %>%
+      dplyr::mutate(provincia = stringr::str_pad(provincia, width = 2, pad = "0"),
+             des_sector = "Global")
+
+
+    indicador <- modulo_tics %>%
+      dplyr::select(anio_fiscal,provincia, indicador,des_sector, n) %>%
+      dplyr::filter(anio_fiscal == anio, des_sector == "Global")
+
+  }else{
+    data("dimensiones_provinciales")
+
+    tabla <-  dimensiones_provinciales
+
+    # rm(dimensiones_provinciales)
+
+    tabla <- tabla %>%
+      dplyr::filter(anio_fiscal == anio,
+             des_sector == sector) %>%
+      dplyr::mutate(provincia = stringr::str_pad(provincia, width = 2, pad = "0"))
+
+
+    indicador <- modulo_tics %>%
+      dplyr::select(anio_fiscal,provincia, indicador,des_sector, n) %>%
+      dplyr::filter(anio_fiscal == anio, des_sector == sector)
+  }
+
+  # browser()
+
+  tabla <- tabla %>%
+    dplyr::left_join(codificacion,
+              by = c("provincia" = "DPA_PROVIN")) %>%
+    dplyr::left_join(indicador,
+              by = c("provincia", "des_sector","anio_fiscal")) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(dplyr::across(c(tasa_gestion,
+                    inversion,
+                    mercado,
+                    personal_ratio,
+                    tasa_uso), scales::rescale, to = c(0, 1)),
+                  dplyr::across(c(tasa_gestion,
+                    inversion,
+                    mercado,
+                    personal_ratio,
+                    tasa_uso),
+                    tidyr::replace_na, 0)) %>%
+    dplyr::rename(group = DPA_DESPRO)
+
+  funciones <- list(slice_max = function(tabla){
+    tabla %>%
+      dplyr::slice_max(indicador) %>%
+      dplyr::mutate(group = stringr::str_c("Max: ", group))
+  },
+  slice_min = function(tabla){
+    tabla %>%
+      dplyr::slice_min(indicador) %>%
+      dplyr::mutate(group = stringr::str_c("Min: ", group))
+  },
+  filter_nacional = function(tabla){
+    tabla %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(des_sector) %>%
+      dplyr::summarise(dplyr::across(c(tasa_gestion,
+                         inversion,
+                         mercado,
+                         personal_ratio,
+                         tasa_uso),
+                       ~weighted.mean(.x, n, na.rm = TRUE))) %>%
+      dplyr::rename(group = des_sector)
+  },
+  filter_pichincha = function(tabla){
+    tabla %>%
+      dplyr::filter(group == "PICHINCHA")
+  },
+  filter_guayas = function(tabla){
+    tabla %>%
+      dplyr::filter(group == "GUAYAS")
+  },
+  filter_manabi = function(tabla){
+    tabla %>%
+      dplyr::filter(group == "MANABÍ")
+  }
+  # ,
+  # filter_adicional = function(tabla){
+  #   if(!is.null(filtro)){
+  #     tabla %>%
+  #       dplyr::filter(group == filtro)
+  # }else{
+  #   return(NULL)
+  # }
+  # }
+  )
+
+
+
+  results <- purrr::map(funciones, ~.x(tabla))
+
+  return(results)
+
+}
+
+# generar_radares(2020,"Comercio",filtro = "AZUAY")
+
