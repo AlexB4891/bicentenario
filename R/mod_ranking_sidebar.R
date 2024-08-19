@@ -36,7 +36,7 @@ mod_ranking_sidebar_ui <- function(id){
               '))
     ),
     div(class = "sidebar-content",
-    h2("Indice de adopción de Tecnologías de la Información y Comunicación (TICS)"),
+    h2("Indice de Innovación y Adopción de Tecnologías de la Información y Comunicación (TICS)"),
     h3("Caso aplicado a la provincia de Manabí"),
     p("Nuestra aplicación le permite explorar el índice de adopción de TIC's en Ecuador de manera detallada y personalizada. Puede seleccionar el año de análisis para observar cómo ha evolucionado la adopción de TIC's a lo largo del tiempo.  "),
     div(
