@@ -102,8 +102,28 @@ app_ui <- function(request) {
             class = "ui grid",
             div(
               class = "sixteen wide column",
+              p("
+El indicador ha sido construido utilizando un Análisis Factorial Múltiple (AFM) que integra cinco dimensiones clave, reflejando así la naturaleza multidimensional del fenómeno que se estudia. Cada una de estas dimensiones representa un componente esencial del indicador global. Al desagregarlo, no solo obtenemos una visión comparativa más clara entre las empresas de diferentes provincias, sino que también revelamos sus fortalezas y áreas de mejora específicas, ofreciendo una herramienta poderosa para la toma de decisiones estratégicas y el desarrollo regional.")
+            )
+          ),
+          div(
+            class = "ui grid",
+            div(
+              class = "sixteen wide column",
               mod_radares_ui("radares_1")
             )
+          ),
+          div(
+            class = "sixteen wide column",
+          p(strong("1. Prácticas de Gestión:"), "Esta dimensión refleja la adopción de tecnologías de la información y la comunicación (TICs) en la gestión empresarial. Aquí se consideran diez prácticas clave que representan cómo las empresas utilizan las TICs para optimizar sus procesos de negocio. Desde la automatización de tareas administrativas hasta la implementación de sistemas avanzados de gestión de recursos, estas prácticas son fundamentales para mantener una operación eficiente y competitiva en un entorno empresarial moderno."),
+
+          p(strong("2. Inversión en TICs:"), "La inversión en tecnologías es un factor crítico para determinar la capacidad de una empresa para innovar y mantenerse relevante. En este gráfico, se mide a través de un puntaje que va del 1 al 20, basado en la posición de la empresa dentro de grupos porcentuales de inversión (quintiles). Cuanto mayor sea la puntuación, mayor es la inversión relativa de la empresa en comparación con sus pares, destacando su compromiso con la modernización tecnológica."),
+
+          p(strong("3. Retorno de Compras:"), "El retorno de compras es un indicador de la eficiencia comercial, calculado como la proporción entre ventas y compras. Este ratio revela cuán efectivamente una empresa convierte sus inversiones en inventario en ingresos. Un retorno alto sugiere una operación comercial ágil y bien gestionada, donde las compras se transforman rápidamente en ventas, impulsando la rentabilidad."),
+
+          p(strong("4. Cultura de Uso:"), "Esta dimensión captura la penetración de especialistas en TICs dentro de la plantilla laboral de la empresa. Un mayor porcentaje de expertos en tecnologías en relación con el total de empleados indica una cultura organizacional que valora y depende del conocimiento técnico para impulsar la innovación y la eficiencia operativa, lo que fortalece la capacidad de adaptación y crecimiento en un mercado digital."),
+
+          p(strong("5. Calidad del Uso:"), "Medir la calidad del uso de las TICs implica evaluar hasta qué punto las empresas están implementando prácticas que maximicen el valor de estas tecnologías. Aquí, se consideran 51 criterios diferentes, cada uno representando un aspecto crucial de la aplicación efectiva de las TICs. El porcentaje que las empresas cumplen de estos criterios indica su nivel de madurez tecnológica, proporcionando una visión clara de su capacidad para utilizar la tecnología de manera óptima.")
           )
         )
       )
